@@ -12,7 +12,10 @@ class TestDiff(unittest.TestCase):
 
     def test_diff(self):
         s = patch(self.nodefile_path, self.nodediff_path)
-        for line in difflib.unified_diff(s, open(self.comparison_path, "rU").readlines(),
-                fromfile='calculated', tofile='actual'):
-            sys.stdout.write(line)
-
+        diff = difflib.unified_diff(s, open(self.comparison_path, "rU").readlines(),
+                fromfile='calculated', tofile='actual')
+        if diff:
+            for line in diff:
+                sys.stdout.write(line)
+            open('error.list', 'w').writelines(s)
+            self.assertIsNone(diff)
