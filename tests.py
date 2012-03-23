@@ -11,8 +11,8 @@ class TestDiff(unittest.TestCase):
         self.comparison_path = 'data/nodelist.003'
 
     def test_diff(self):
-        s = patch(self.nodefile_path, self.nodefile_path)
-        for line in difflib.unified_diff(s, open(self.comparison_path).readlines(),
+        s = patch(self.nodefile_path, self.nodediff_path)
+        for line in difflib.unified_diff(s, open(self.comparison_path, "rU").readlines(),
                 fromfile='calculated', tofile='actual'):
             sys.stdout.write(line)
 

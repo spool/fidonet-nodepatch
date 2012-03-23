@@ -10,9 +10,9 @@ def patch(nodefile, nodediff):
     nfl_counter = 0 # keeps track of the nodefile line
     add_counter = 0 # keeps track of the nodediff lines to add
 
-    with open(nodefile) as nf:
+    with open(nodefile, "rU") as nf:
         nfl = nf.readlines()
-        with open(nodediff) as nd:
+        with open(nodediff, "rU") as nd:
             for ndl in nd.readlines()[1:]:
                 if add_counter:
                     s.append(ndl)
@@ -25,9 +25,3 @@ def patch(nodefile, nodediff):
                     s += nfl[nfl_counter:nfl_counter + int(ndl[1:])]
                     nfl_counter += int(ndl[1:])
     return s
-
-def check_nodefile(generated, original):
-    gen  =  [l.strip() for l in open(generated).readlines()]
-    orig =  [l.strip() for l in open(original).readlines()]
-    return gen == orig
-
