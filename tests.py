@@ -15,7 +15,6 @@ class TestDiff(unittest.TestCase):
         diff = difflib.unified_diff(s, open(self.comparison_path, "rU").readlines(),
                 fromfile='calculated', tofile='actual')
         if diff:
-            for line in diff:
-                sys.stdout.write(line)
+            print ''.join(diff)
             open('error.list', 'w').writelines(s)
             self.assertIsNone(diff)
