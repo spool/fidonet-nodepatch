@@ -1,6 +1,9 @@
+#!/usr/bin/env python
 """
-Take a nodelile and a nodediff and apply the nodediff
+Take a nodefile and a nodediff and apply the nodediff
 """
+import difflib
+import optparse
 
 def patch(nodefile, nodediff):
     """
@@ -25,3 +28,28 @@ def patch(nodefile, nodediff):
                     s += nfl[nfl_counter:nfl_counter + int(ndl[1:])]
                     nfl_counter += int(ndl[1:])
     return s
+
+def diff_nodelists(s, path):
+    return difflib.unified_diff(s, filter_ctrlz(path), 'calculated', 'actual')
+
+def filter_ctrlz(path):
+    s = open(path, "rU").readlines()
+    if s[-1] == chr(26):
+        print 'Filtered out ctrl-z'
+        return s[:-1]
+    return s
+
+def main():
+    p = optparse.OptionParser()
+    p.add_option('--patch', '-p', nargs=2, dest="patch_file_paths",
+            help="patch a file with a nodediff and output resulting nodelist to standard out.")
+    p.add_option('--diff', '-d', nargs=2, dest="diff_file_paths",
+            help="diff two nodefiles and output the results in unified diff format to standard out.")
+    (options, arguments) = p.parse_args()
+    if options.patch_file_paths:
+        print ''.join(patch(options.patch_file_paths[0], options.patch_file_paths[1]))
+    if options.diff_file_paths:
+        print ''.join(diff_nodelists(open(options.diff_file_paths[0], 'rU').read(), options.diff_file_paths[1]))
+
+if __name__ == '__main__':
+        main()
