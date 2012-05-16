@@ -52,4 +52,4 @@ def main():
         print ''.join(diff_nodelists(open(options.diff_file_paths[0], 'rU').read(), options.diff_file_paths[1]))
 
 if __name__ == '__main__':
-        main()
+    main()
